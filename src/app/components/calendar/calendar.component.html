@@ -23,12 +23,12 @@
     <th>Saturday</th>
   </tr>
   <tr *ngFor="let week of calendarArr">
-    <th>{{week[0]}}</th>
-    <th>{{week[1]}}</th>
-    <th>{{week[2]}}</th>
-    <th>{{week[3]}}</th>
-    <th>{{week[4]}}</th>
-    <th>{{week[5]}}</th>
-    <th>{{week[6]}}</th>
+    <td [ngClass]="setDayClass(week[0])">{{week[0].day}}</td>
+    <td [ngClass]="setDayClass(week[1])">{{week[1].day}}</td>
+    <td [ngClass]="setDayClass(week[2])">{{week[2].day}}</td>
+    <td [ngClass]="setDayClass(week[3])">{{week[3].day}}</td>
+    <td [ngClass]="setDayClass(week[4])">{{week[4].day}}</td>
+    <td [ngClass]="setDayClass(week[5])">{{week[5].day}}</td>
+    <td [ngClass]="setDayClass(week[6])">{{week[6].day}}</td>
   </tr>
 </table>

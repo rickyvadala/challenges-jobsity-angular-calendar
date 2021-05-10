@@ -67,18 +67,29 @@ export class CalendarComponent implements OnInit, OnDestroy {
     const lastDayPrevMonth = new Date(dt.getFullYear(), dt.getMonth(), 0).getDate();
     const lastDayActualMonth = new Date(dt.getFullYear(), dt.getMonth() + 1, 0).getDate();
     const firstDayActualMonth = new Date(dt.getFullYear(), dt.getMonth(), 1).getDay();
-    const daysArr = Array.from({length: lastDayActualMonth}, (_, i) => i + 1);
+    const daysArr = Array.from({length: lastDayActualMonth}, (c: CalendarDay, i) => {
+      return {
+        day: i + 1,
+        isActualMonth: true
+      };
+    });
 
     // Insert days before this month
     let beforeDaysCounter = lastDayPrevMonth;
     for (let i = 0; i < firstDayActualMonth; i++) {
-      daysArr.unshift(beforeDaysCounter);
+      daysArr.unshift({
+        day: beforeDaysCounter,
+        isActualMonth: false
+      });
       beforeDaysCounter--;
     }
     // Insert days after this month
     const afterDaysCounter = DAYS_IN_WEEK - (daysArr.length % DAYS_IN_WEEK);
     for (let i = 0; i < afterDaysCounter; i++) {
-      daysArr.push(i + 1);
+      daysArr.push({
+        day: i + 1,
+        isActualMonth: false
+      });
     }
 
     while (daysArr.length) {
@@ -86,4 +97,12 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
   }
 
+  setDayClass(day: CalendarDay) {
+    return (day.isActualMonth) ? 'actual' : 'not-actual';
+  }
+}
+
+export interface CalendarDay {
+  day: number;
+  isActualMonth: boolean;
 }

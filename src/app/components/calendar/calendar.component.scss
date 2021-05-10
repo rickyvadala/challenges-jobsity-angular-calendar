@@ -10,3 +10,17 @@ table tr:first-child  {
   background-color: #2f74b5;
   color: white;
 }
+
+table td {
+  height: 100px;
+  text-align: left;
+  vertical-align: top;
+  padding: 10px;
+}
+
+.actual {
+  background-color: #2f74b5;
+}
+.not-actual {
+  background-color: grey;
+}
