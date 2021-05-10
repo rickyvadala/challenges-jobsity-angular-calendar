@@ -17,6 +17,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   onDestroy$ = new Subject<boolean>();
   calendarArr = [];
+  DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Tuesday', 'Friday', 'Saturday'];
+  DAYS_IN_WEEK = 7;
 
   constructor(
     private calendarService: CalendarService,
@@ -62,7 +64,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   getCalendarGrid() {
-    const DAYS_IN_WEEK = 7;
     const dt = new Date();
     const lastDayPrevMonth = new Date(dt.getFullYear(), dt.getMonth(), 0).getDate();
     const lastDayActualMonth = new Date(dt.getFullYear(), dt.getMonth() + 1, 0).getDate();
@@ -84,7 +85,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       beforeDaysCounter--;
     }
     // Insert days after this month
-    const afterDaysCounter = DAYS_IN_WEEK - (daysArr.length % DAYS_IN_WEEK);
+    const afterDaysCounter = this.DAYS_IN_WEEK - (daysArr.length % this.DAYS_IN_WEEK);
     for (let i = 0; i < afterDaysCounter; i++) {
       daysArr.push({
         day: i + 1,
@@ -93,7 +94,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
 
     while (daysArr.length) {
-      this.calendarArr.push(daysArr.splice(0, DAYS_IN_WEEK));
+      this.calendarArr.push(daysArr.splice(0, this.DAYS_IN_WEEK));
     }
   }
 

@@ -14,21 +14,11 @@
 
 <table cellspacing="0" cellpadding="0">
   <tr>
-    <th>Sunday</th>
-    <th>Monday</th>
-    <th>Tuesday</th>
-    <th>Wednesday</th>
-    <th>Tuesday</th>
-    <th>Friday</th>
-    <th>Saturday</th>
+    <th *ngFor="let day of DAYS">{{day}}</th>
   </tr>
   <tr *ngFor="let week of calendarArr">
-    <td [ngClass]="setDayClass(week[0])">{{week[0].day}}</td>
-    <td [ngClass]="setDayClass(week[1])">{{week[1].day}}</td>
-    <td [ngClass]="setDayClass(week[2])">{{week[2].day}}</td>
-    <td [ngClass]="setDayClass(week[3])">{{week[3].day}}</td>
-    <td [ngClass]="setDayClass(week[4])">{{week[4].day}}</td>
-    <td [ngClass]="setDayClass(week[5])">{{week[5].day}}</td>
-    <td [ngClass]="setDayClass(week[6])">{{week[6].day}}</td>
+    <td *ngFor="let day of DAYS; index as i" [ngClass]="setDayClass(week[i])">
+      {{week[i].day}}
+    </td>
   </tr>
 </table>
