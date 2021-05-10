@@ -14,12 +14,15 @@ import {ReminderFormComponent} from '../reminder-form/reminder-form.component';
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit, OnDestroy {
-
-  onDestroy$ = new Subject<boolean>();
-  calendarArr = [];
   DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Tuesday', 'Friday', 'Saturday'];
   DAYS_IN_WEEK = 7;
-  private selectedDate: Date = new Date();
+
+  onDestroy$ = new Subject<boolean>();
+
+  calendarArr = [];
+  daysArr: CalendarDay[] = [];
+  selectedDate: Date = new Date();
+  reminders: Reminder[];
 
   constructor(
     private calendarService: CalendarService,
@@ -30,17 +33,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.calendarService.list(new Date())
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((reminders: Reminder[]) => {
-        reminders.map((reminder: Reminder) => {
-          return {
-            ...reminder,
-            weather: this.getWeather(reminder.city),
-          };
-        });
-        console.log(reminders);
-      });
+    this.getReminders(this.selectedDate);
 
     this.getCalendarGrid(this.selectedDate);
   }
@@ -62,53 +55,82 @@ export class CalendarComponent implements OnInit, OnDestroy {
         reminder,
       },
     });
-    dialogRef.afterClosed().subscribe((result: Reminder) => {
-      console.log(result);
+    dialogRef.afterClosed().subscribe((result: any) => {
+      this.getReminders(this.selectedDate);
+      this.transformArrForHtml(this.setRemindersToCalendar([...this.daysArr]));
     });
   }
 
   getCalendarGrid(dt: Date) {
-    const lastDayPrevMonth = new Date(dt.getFullYear(), dt.getMonth(), 0).getDate();
-    const lastDayActualMonth = new Date(dt.getFullYear(), dt.getMonth() + 1, 0).getDate();
-    const firstDayActualMonth = new Date(dt.getFullYear(), dt.getMonth(), 1).getDay();
-    let daysArr = Array.from({length: lastDayActualMonth}, (c: CalendarDay, i) => {
+    const lastDayPrevMonth: number = new Date(dt.getFullYear(), dt.getMonth(), 0).getDate();
+    const lastDayActualMonth: number = new Date(dt.getFullYear(), dt.getMonth() + 1, 0).getDate();
+    const firstDayActualMonth: number = new Date(dt.getFullYear(), dt.getMonth(), 1).getDay();
+    this.daysArr = Array.from({length: lastDayActualMonth}, (c: CalendarDay, i) => {
       return {
         day: i + 1,
         isActualMonth: true,
       };
     });
 
-    daysArr = this.fillCalendarDays(daysArr, lastDayPrevMonth, firstDayActualMonth);
+    this.fillCalendarDays(lastDayPrevMonth, firstDayActualMonth);
 
-    while (daysArr.length) {
-      this.calendarArr.push(daysArr.splice(0, this.DAYS_IN_WEEK));
+    this.transformArrForHtml([...this.daysArr]);
+  }
+
+  transformArrForHtml(daysArrWithReminders: CalendarDay[]) {
+    this.calendarArr = [];
+    while (daysArrWithReminders.length) {
+      this.calendarArr.push(daysArrWithReminders.splice(0, this.DAYS_IN_WEEK));
     }
   }
 
-  fillCalendarDays(daysArr, lastDayPrevMonth, firstDayActualMonth): [] {
+  fillCalendarDays(lastDayPrevMonth: number, firstDayActualMonth: number): CalendarDay[] {
     // Insert days before this month
     let beforeDaysCounter = lastDayPrevMonth;
     for (let i = 0; i < firstDayActualMonth; i++) {
-      daysArr.unshift({
+      this.daysArr.unshift({
         day: beforeDaysCounter,
         isActualMonth: false
       });
       beforeDaysCounter--;
     }
     // Insert days after this month
-    const afterDaysCounter = this.DAYS_IN_WEEK - (daysArr.length % this.DAYS_IN_WEEK);
+    const afterDaysCounter = this.DAYS_IN_WEEK - (this.daysArr.length % this.DAYS_IN_WEEK);
     for (let i = 0; i < afterDaysCounter; i++) {
-      daysArr.push({
+      this.daysArr.push({
         day: i + 1,
         isActualMonth: false
       });
     }
 
-    return daysArr;
+    return this.setRemindersToCalendar([...this.daysArr]);
   }
 
   setDayClass(day: CalendarDay) {
     return (day.isActualMonth) ? 'actual' : 'not-actual';
+  }
+
+  private setRemindersToCalendar(daysArrWithReminders: CalendarDay[]): CalendarDay[] {
+    // Insert reminders on this month
+    daysArrWithReminders.forEach(obj => {
+      if (obj.isActualMonth) {
+        obj.reminders = this.reminders.filter(r => r.dateTime.getDate() === obj.day);
+      }
+    });
+    return daysArrWithReminders;
+  }
+
+  private getReminders(dt: Date) {
+    this.calendarService.list(dt)
+      .subscribe((reminders: Reminder[]) => {
+        reminders.map((reminder: Reminder) => {
+          return {
+            ...reminder,
+            weather: this.getWeather(reminder.city),
+          };
+        });
+        this.reminders = reminders;
+      });
   }
 }
 

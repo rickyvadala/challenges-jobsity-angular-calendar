@@ -39,9 +39,14 @@ table {
     color: #a6a6a6 !important;
   }
 }
+::ng-deep {
+  .mat-chip-list-wrapper {
+    margin-top: 2px !important;
+  }
+}
 
-
-
-
-
-
+.mat-standard-chip {
+  margin: 2px 0 !important;
+  padding: 4px 8px;
+  min-height: 20px;
+}

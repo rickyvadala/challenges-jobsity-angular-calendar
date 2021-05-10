@@ -1,16 +1,9 @@
 <div class="reminder-header">
-  <h3 class="reminder-title">Create Reminder</h3>
+  <h3 class="reminder-title">{{(isUpdate) ? 'Update' : 'Create'}} Reminder</h3>
   <div class="reminder-circle" [style.background]="getColor()"></div>
 </div>
-<!--export interface Reminder {-->
-<!--text: string;-->
-<!--dateTime: Date;-->
-<!--color: string;-->
-<!--city?: string;-->
-<!--}-->
 
-
-<form class="reminderForm-container" [formGroup]="reminderForm" (ngSubmit)="onSubmit()">
+<form class="reminderForm-container" [formGroup]="reminderForm">
   <mat-form-field appearance="fill" [color]="getColor()">
     <mat-label>Text</mat-label>
     <input matInput type="text" placeholder="Text" [formControl]="textControl">
@@ -27,12 +20,7 @@
   <mat-form-field appearance="fill" [color]="getColor()">
     <mat-label>Color</mat-label>
     <mat-select [formControl]="colorControl">
-      <mat-option value="blue">Blue</mat-option>
-      <mat-option value="red">Red</mat-option>
-      <mat-option value="yellow">Yellow</mat-option>
-      <mat-option value="green">Green</mat-option>
-      <mat-option value="orange">Orange</mat-option>
-      <mat-option value="violet">Violet</mat-option>
+      <mat-option *ngFor="let color of COLORS" [value]="color">{{color | titlecase}}</mat-option>
     </mat-select>
   </mat-form-field>
 
@@ -41,9 +29,20 @@
     <input matInput type="text" placeholder="Text" [formControl]="cityControl">
   </mat-form-field>
 
-  <div style="text-align: center">
-    <button mat-raised-button color="primary" type="submit" [disabled]="this.reminderForm.invalid">Create</button>
+  <div style="text-align: center" *ngIf="!isUpdate; else updateButtons">
+    <button mat-raised-button color="primary" (click)="onSubmit('create')" type="submit"
+            [disabled]="this.reminderForm.invalid">Create
+    </button>
   </div>
+
+  <ng-template #updateButtons>
+    <div>
+      <button mat-raised-button color="warn" (click)="onSubmit('delete')">Delete</button>
+      <button mat-raised-button color="primary" (click)="onSubmit('edit')" style="float: right;"
+              [disabled]="this.reminderForm.invalid">Edit
+      </button>
+    </div>
+  </ng-template>
 
 
 </form>

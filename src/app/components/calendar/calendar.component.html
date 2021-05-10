@@ -5,8 +5,9 @@
   <span>Jobsity challenge</span>
   <span class="spacer"></span>
   <button mat-button (click)="openReminderForm()">
-   <mat-icon>add</mat-icon> New reminder
- </button>
+    <mat-icon>add</mat-icon>
+    New reminder
+  </button>
 </mat-toolbar>
 
 <!-- Create the calendar here -->
@@ -19,6 +20,13 @@
   <tr *ngFor="let week of calendarArr">
     <td *ngFor="let day of DAYS; index as i" [ngClass]="setDayClass(week[i])">
       {{week[i].day}}
+      <mat-chip-list *ngIf="week[i].reminders && week[i].reminders.length !== 0"
+                     class="mat-chip-list-stacked" aria-label="Color selection">
+        <mat-chip *ngFor="let r of week[i].reminders" selected [style.backgroundColor]="r.color"
+                  (click)="openReminderForm(r)">
+          {{r.text}}
+        </mat-chip>
+      </mat-chip-list>
     </td>
   </tr>
 </table>
