@@ -10,10 +10,17 @@
  
  **DONE** - Ability to edit reminders - including changing text, city, day and time.
  
- **DONE WITH SOME PROBLEMS** - Add a weather service call from [OpenWeather](https://openweathermap.org/forecast16) and get the weather forecast (e.g. Rain) for the date of the calendar reminder based on the city.
+ **IN PROGRESS** - Add a weather service call from [OpenWeather](https://openweathermap.org/forecast16) and get the weather forecast (e.g. Rain) for the date of the calendar reminder based on the city.
  
  _(The API Key that OpenWeather provided me throws 401 on forecast requests, but works fine on Weather APIs, so each reminder has the weather of the current day, not the forecast)_
 
+  **DONE** - Expand the calendar to support more than the current month or year.
+ 
+ _(Selecting a date from the DATEPICKER on the top of the calendar)_
+
+  **IN PROGRESS** - Properly handle overflow when multiple reminders appear on the same date.
+ 
+ _(The Calendar resizes when it has more than 3 reminders, I put here IN PROGRESS and not DONE, because i had a better solution, but didnt have the time)_
 
 
 ## Description

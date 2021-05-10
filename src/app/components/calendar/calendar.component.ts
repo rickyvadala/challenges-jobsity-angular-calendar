@@ -130,6 +130,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
       });
 
   }
+
+  dateChange() {
+    this.selectedDate = this.selectedDateControl.value;
+
+    this.getReminders(this.selectedDate);
+
+    this.getCalendarGrid(this.selectedDate);
+  }
 }
 
 
