@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { Reminder } from 'src/app/interfaces/reminder';
-import { CalendarService } from 'src/app/services/calendar.service';
-import { WeatherService } from 'src/app/services/weather.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ReminderFormComponent } from '../reminder-form/reminder-form.component';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {Reminder} from 'src/app/interfaces/reminder';
+import {CalendarService} from 'src/app/services/calendar.service';
+import {WeatherService} from 'src/app/services/weather.service';
+import {MatDialog} from '@angular/material/dialog';
+import {ReminderFormComponent} from '../reminder-form/reminder-form.component';
 
 
 @Component({
@@ -16,12 +16,15 @@ import { ReminderFormComponent } from '../reminder-form/reminder-form.component'
 export class CalendarComponent implements OnInit, OnDestroy {
 
   onDestroy$ = new Subject<boolean>();
+  calendarArr = [];
 
   constructor(
     private calendarService: CalendarService,
     private weatherService: WeatherService,
     private matDialog: MatDialog,
-  ) { }
+  ) {
+  }
+
 
   ngOnInit(): void {
     this.calendarService.list(new Date())
@@ -35,6 +38,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
         });
         console.log(reminders);
       });
+
+    this.getCalendarGrid();
   }
 
   getWeather(city: string) {
@@ -54,6 +59,31 @@ export class CalendarComponent implements OnInit, OnDestroy {
         reminder,
       },
     });
+  }
+
+  getCalendarGrid() {
+    const DAYS_IN_WEEK = 7;
+    const dt = new Date();
+    const lastDayPrevMonth = new Date(dt.getFullYear(), dt.getMonth(), 0).getDate();
+    const lastDayActualMonth = new Date(dt.getFullYear(), dt.getMonth() + 1, 0).getDate();
+    const firstDayActualMonth = new Date(dt.getFullYear(), dt.getMonth(), 1).getDay();
+    const daysArr = Array.from({length: lastDayActualMonth}, (_, i) => i + 1);
+
+    // Insert days before this month
+    let beforeDaysCounter = lastDayPrevMonth;
+    for (let i = 0; i < firstDayActualMonth; i++) {
+      daysArr.unshift(beforeDaysCounter);
+      beforeDaysCounter--;
+    }
+    // Insert days after this month
+    const afterDaysCounter = DAYS_IN_WEEK - (daysArr.length % DAYS_IN_WEEK);
+    for (let i = 0; i < afterDaysCounter; i++) {
+      daysArr.push(i + 1);
+    }
+
+    while (daysArr.length) {
+      this.calendarArr.push(daysArr.splice(0, DAYS_IN_WEEK));
+    }
   }
 
 }

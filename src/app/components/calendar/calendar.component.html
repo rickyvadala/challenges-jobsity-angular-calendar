@@ -11,3 +11,24 @@
 
 <!-- Create the calendar here -->
 <!-- ======================== -->
+
+<table>
+  <tr>
+    <th>Sunday</th>
+    <th>Monday</th>
+    <th>Tuesday</th>
+    <th>Wednesday</th>
+    <th>Tuesday</th>
+    <th>Friday</th>
+    <th>Saturday</th>
+  </tr>
+  <tr *ngFor="let week of calendarArr">
+    <th>{{week[0]}}</th>
+    <th>{{week[1]}}</th>
+    <th>{{week[2]}}</th>
+    <th>{{week[3]}}</th>
+    <th>{{week[4]}}</th>
+    <th>{{week[5]}}</th>
+    <th>{{week[6]}}</th>
+  </tr>
+</table>

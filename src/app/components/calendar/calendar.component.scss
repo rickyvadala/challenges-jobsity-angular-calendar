@@ -1,3 +1,12 @@
 .spacer {
   flex: 1 1 auto;
 }
+
+table {
+  width: 100%;
+}
+
+table tr:first-child  {
+  background-color: #2f74b5;
+  color: white;
+}
