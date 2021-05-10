@@ -4,6 +4,15 @@
   </button>
   <span>Jobsity challenge</span>
   <span class="spacer"></span>
+  <form class="reminderForm-container" [formGroup]="selectedDateForm">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Choose a date</mat-label>
+    <input matInput [matDatepicker]="picker" [formControl]="selectedDateControl">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+    </form>
   <button mat-button (click)="openReminderForm()">
     <mat-icon>add</mat-icon>
     New reminder

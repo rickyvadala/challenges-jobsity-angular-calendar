@@ -7,6 +7,7 @@ import {CalendarService} from 'src/app/services/calendar.service';
 import {WeatherService} from 'src/app/services/weather.service';
 import {MatDialog} from '@angular/material/dialog';
 import {ReminderFormComponent} from '../reminder-form/reminder-form.component';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-calendar',
@@ -23,12 +24,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
   daysArr: CalendarDay[] = [];
   selectedDate: Date = new Date();
   reminders: Reminder[];
+  selectedDateControl = new FormControl(this.selectedDate, Validators.required);
+  selectedDateForm: FormGroup;
+
 
   constructor(
     private calendarService: CalendarService,
-    private weatherService: WeatherService,
     private matDialog: MatDialog,
+    fb: FormBuilder
   ) {
+    this.selectedDateForm = fb.group({
+      selectedDate: this.selectedDateControl
+    });
   }
 
 
@@ -38,11 +45,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.getCalendarGrid(this.selectedDate);
   }
 
-  getWeather(city: string) {
-    const x = this.weatherService.getWeatherInformation(city);
-    console.log(x);
-    return x;
-  }
+
 
   ngOnDestroy() {
     this.onDestroy$.next(true);
@@ -123,14 +126,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
   private getReminders(dt: Date) {
     this.calendarService.list(dt)
       .subscribe((reminders: Reminder[]) => {
-        reminders.map((reminder: Reminder) => {
-          return {
-            ...reminder,
-            weather: this.getWeather(reminder.city),
-          };
-        });
         this.reminders = reminders;
       });
+
   }
 }
 

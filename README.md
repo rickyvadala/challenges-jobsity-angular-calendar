@@ -4,6 +4,18 @@
 
 # Angular Challenge
 
+## Resolution
+
+ **DONE** - Ability to add "*reminders*" (max. 30 characters) for a day and time specified by the user. Also, include a city.
+ 
+ **DONE** - Ability to edit reminders - including changing text, city, day and time.
+ 
+ **DONE WITH SOME PROBLEMS** - Add a weather service call from [OpenWeather](https://openweathermap.org/forecast16) and get the weather forecast (e.g. Rain) for the date of the calendar reminder based on the city.
+ 
+ _(The API Key that OpenWeather provided me throws 401 on forecast requests, but works fine on Weather APIs, so each reminder has the weather of the current day, not the forecast)_
+
+
+
 ## Description
 
 This project is designed to test your knowledge of front-end web technologies and assess your ability to create front-​end UI products with attention to details, cross-browser compatibility, standards, and  reusability.

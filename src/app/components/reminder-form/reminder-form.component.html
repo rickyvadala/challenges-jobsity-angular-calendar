@@ -42,7 +42,17 @@
               [disabled]="this.reminderForm.invalid">Edit
       </button>
     </div>
+
+    <div *ngIf="this.weather">
+      <h3 class="mt-16">Weather</h3>
+      <ul>
+        <li>{{this.weather.main}}</li>
+        <li>{{this.weather.description | titlecase}}</li>
+      </ul>
+    </div>
   </ng-template>
+
+
 
 
 </form>
