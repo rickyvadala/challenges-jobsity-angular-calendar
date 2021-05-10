@@ -8,12 +8,17 @@ import { Reminder } from '../interfaces/reminder';
 })
 export class CalendarService {
 
+  private static reminderId = 0;
   reminders: Reminder[] = [];
 
   constructor() { }
 
   create(data: Reminder): Reminder {
-    return data;
+    const newReminder: Reminder = data;
+    newReminder.reminderId = CalendarService.reminderId;
+    this.reminders.push(data);
+    CalendarService.reminderId++;
+    return newReminder;
   }
 
   edit(data: Reminder): Reminder {

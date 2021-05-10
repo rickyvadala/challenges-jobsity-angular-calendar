@@ -1,1 +1,49 @@
-<p>Reminder form will be here :)</p>
+<div class="reminder-header">
+  <h3 class="reminder-title">Create Reminder</h3>
+  <div class="reminder-circle" [style.background]="getColor()"></div>
+</div>
+<!--export interface Reminder {-->
+<!--text: string;-->
+<!--dateTime: Date;-->
+<!--color: string;-->
+<!--city?: string;-->
+<!--}-->
+
+
+<form class="reminderForm-container" [formGroup]="reminderForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill" [color]="getColor()">
+    <mat-label>Text</mat-label>
+    <input matInput type="text" placeholder="Text" [formControl]="textControl">
+    <mat-error *ngIf="textControl.invalid">Text should be between 1 and 30 characters.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Choose a date</mat-label>
+    <input matInput [matDatepicker]="picker" [formControl]="dateControl">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" [color]="getColor()">
+    <mat-label>Color</mat-label>
+    <mat-select [formControl]="colorControl">
+      <mat-option value="blue">Blue</mat-option>
+      <mat-option value="red">Red</mat-option>
+      <mat-option value="yellow">Yellow</mat-option>
+      <mat-option value="green">Green</mat-option>
+      <mat-option value="orange">Orange</mat-option>
+      <mat-option value="violet">Violet</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" [color]="getColor()">
+    <mat-label>City</mat-label>
+    <input matInput type="text" placeholder="Text" [formControl]="cityControl">
+  </mat-form-field>
+
+  <div style="text-align: center">
+    <button mat-raised-button color="primary" type="submit" [disabled]="this.reminderForm.invalid">Create</button>
+  </div>
+
+
+</form>

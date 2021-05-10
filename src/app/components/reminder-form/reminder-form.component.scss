@@ -1,0 +1,25 @@
+
+.reminder-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .reminder-title {
+    display: inline-flex;
+  }
+  .reminder-circle {
+    height: 24px;
+    width: 24px;
+    background: white;
+    display: inline-flex;
+    border: 2px solid rgba(0,0,0,0.2);
+    border-radius: 16px;
+    margin: 0 0 16px 16px;
+  }
+}
+
+.mat-form-field {
+  display: block ;
+}
+
+
