@@ -70,7 +70,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     const daysArr = Array.from({length: lastDayActualMonth}, (c: CalendarDay, i) => {
       return {
         day: i + 1,
-        isActualMonth: true
+        isActualMonth: true,
       };
     });
 
@@ -105,4 +105,5 @@ export class CalendarComponent implements OnInit, OnDestroy {
 export interface CalendarDay {
   day: number;
   isActualMonth: boolean;
+  isWeekend: boolean;
 }
